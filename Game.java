@@ -5,21 +5,29 @@ package stbs;
 * First version: Singlethreaded Battleship against two players
 */
 
+/**
+ * Ideas:
+ * - Ship object?
+ * -- Do players even need their own specific ships?
+ */
+
 import java.io.*;
 import java.util.*;
 
 class Player{
 	
-	String name;
+	String name; // player name
 	
+	// player ships
 	char[] aircraft = {'A', 'A', 'A', 'A', 'A'};
 	char[] battleship = {'B', 'B', 'B', 'B'};
 	char[] destroyer = {'D', 'D', 'D'};
 	char[] submarine = {'S', 'S', 'S'};
 	char[] patrol = {'P', 'P'};
 	
-	String[][] scoreboard = new String[11][11];
-	boolean[][] verify = new boolean[11][11];
+	String[][] shipboard = new String[11][11]; // records this player's ship placement
+	String[][] hitboard = new String[11][11]; // records this player's hits and misses
+	boolean[][] verify = new boolean[11][11]; // checks whether the player can place a ship on the board
 	
 	public Player(){
 		
@@ -34,14 +42,17 @@ class Player{
 		
 		for (int i = 0; i < 11; i++){
 			for (int j = 0; j < 11; j++){
-				this.scoreboard[i][j] = "-";
+				this.shipboard[i][j] = "-";
 				this.verify[i][j] = false;
 			}
 		}
 		
-		this.scoreboard[0][0] = " ";
+		this.shipboard[0][0] = " ";
 		
-		// todo: true-ify verify borders
+		for (int i = 0; i < 11; i++){ // "true-ify" borders
+			this.verify[0][i] = true;
+			this.verify[i][0] = true;
+		}
 		
 	}
 
@@ -79,25 +90,20 @@ class Player{
 			}
 		}
 		
-		h2 = Integer.parseInt(head.substring(1));
-		t2 = Integer.parseInt(tail.substring(1));
-		
-		if (h1 > 10 || t1 > 10){ // runs over the border
+		if (h1 == -1 || t1 == -1){ // letter not found
 			System.out.println("Your ship is over the board's border!");
 			System.exit(1);
 		}
 		
-		if (h2 == 0 || t2 == 0){ // runs over the border
+		h2 = Integer.parseInt(head.substring(1));
+		t2 = Integer.parseInt(tail.substring(1));
+		
+		if (h1 > 10 || t1 > 10 || h2 == 0 || t2 == 0){ // something runs over the border
 			System.out.println("Your ship is over the board's border!");
 			System.exit(1);
 		}
 		
 		System.out.println("\nYour inputs are "+head+" and "+tail+". This has become positions "+h1+", "+h2+" and "+t1+", "+t2+".\n");
-		
-		if (h1 == -1 || t1 == -1){ // letter not found
-			System.out.println("Your ship is over the board's border!");
-			System.exit(1);
-		}
 		
 		if (h1 != t1 && h2 != t2){ // diagonal
 			System.out.println("Error: You cannot place a ship diagonally!");
@@ -130,8 +136,7 @@ class Player{
 					start = Math.min(h2, t2);
 					stop = Math.max(h2, t2);
 					
-					// first need to check that the space is allowed
-					
+					// verify check
 					for (int i = start; i <= stop; i++){
 						
 						if (verify[h1][i] == true){
@@ -146,7 +151,7 @@ class Player{
 					
 					// if here, we made it past the verification stage
 					for (int i = start; i <= stop; i++){
-						scoreboard[h1][i] = Character.toString(c);
+						shipboard[h1][i] = Character.toString(c);
 					}
 					
 				} else if (h2 == t2){ // place the ship in the same column
@@ -167,7 +172,7 @@ class Player{
 					
 					// passed verification stage
 					for (int i = start; i <= stop; i++){
-						scoreboard[i][h2] = Character.toString(c);
+						shipboard[i][h2] = Character.toString(c);
 					}
 					
 				}
@@ -203,16 +208,16 @@ public class Game{
 		
 		for (int i = 1; i < 11; i++){ // todo: move this up to constructor because why is it even here...?
 			
-			p1.scoreboard[0][i] = Integer.toString(i);
-			p2.scoreboard[0][i] = Integer.toString(i);
+			p1.shipboard[0][i] = Integer.toString(i);
+			p2.shipboard[0][i] = Integer.toString(i);
 			
-			p1.scoreboard[i][0] = Character.toString(alpha[i-1]);
-			p2.scoreboard[i][0] = Character.toString(alpha[i-1]);
+			p1.shipboard[i][0] = Character.toString(alpha[i-1]);
+			p2.shipboard[i][0] = Character.toString(alpha[i-1]);
 			
 		}
 		
-		p1.scoreboard[0][10] = (String)"10"; // ehhhhh why not
-		p2.scoreboard[0][10] = (String)"10";
+		p1.shipboard[0][10] = "10"; // ehhhhh why not
+		p2.shipboard[0][10] = "10";
 		
 		/*
 		printBoard(p1.scoreboard);
@@ -220,26 +225,40 @@ public class Game{
 		printBoard(p2.scoreboard);
 		*/
 		
-		// Pick a position on the board to place your ships
+		/**
+		 * MT note: this is where the other thread would
+		 * sleep until all five ships are placed, then this
+		 * thread would sleep and the other thread would
+		 * wake up to place its ships
+		 * */
 		
+		// p1 places ships
 		p1.place(p1.aircraft);
 		p1.place(p1.battleship);
+		p1.place(p1.destroyer);
+		p1.place(p1.submarine);
+		p1.place(p1.patrol);
 		
-		printBoard(p1.scoreboard);
+		printBoard(p1.shipboard);
+		
+		// p2 places ships
+		
+		p2.place(p2.aircraft);
+		p2.place(p2.battleship);
+		p2.place(p2.destroyer);
+		p2.place(p2.submarine);
+		p2.place(p2.patrol);
 		
 	}
 	
 	public static void printBoard(String[][] board){ // prints a board
 		
 		for (int i = 0; i < 11; i++){
-			for (int j = 0; j < 11; j++){
-				
-				System.out.print(board[i][j]+"  ");
-				
-			}
 			
-			System.out.println();
-			System.out.println();
+			for (int j = 0; j < 11; j++)
+				System.out.print(board[i][j]+"  ");
+			
+			System.out.println("\n");
 			
 		}
 		
