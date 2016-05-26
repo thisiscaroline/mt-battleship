@@ -5,12 +5,6 @@ package stbs;
 * First version: Singlethreaded Battleship against two players
 */
 
-/**
- * Ideas:
- * - Ship object?
- * -- Do players even need their own specific ships?
- */
-
 import java.io.*;
 import java.util.*;
 
@@ -24,15 +18,7 @@ class Player{
 	
 	public Player(){
 		
-		/*
-		this.name = name;
-		this.aircraft = aircraft;
-		this.battleship = battleship;
-		this.destroyer = destroyer;
-		this.submarine = submarine;
-		this.patrol = patrol;
-		*/
-		
+		// Setting up shipboard, making boolean board all false
 		for (int i = 0; i < 11; i++){
 			for (int j = 0; j < 11; j++){
 				this.shipboard[i][j] = "-";
@@ -42,7 +28,8 @@ class Player{
 		
 		this.shipboard[0][0] = " ";
 		
-		for (int i = 0; i < 11; i++){ // "true-ify" borders
+		// Make boolean borders true
+		for (int i = 0; i < 11; i++){ 
 			this.verify[0][i] = true;
 			this.verify[i][0] = true;
 		}
