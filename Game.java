@@ -18,13 +18,6 @@ class Player{
 	
 	String name; // player name
 	
-	// player ships
-	char[] aircraft = {'A', 'A', 'A', 'A', 'A'};
-	char[] battleship = {'B', 'B', 'B', 'B'};
-	char[] destroyer = {'D', 'D', 'D'};
-	char[] submarine = {'S', 'S', 'S'};
-	char[] patrol = {'P', 'P'};
-	
 	String[][] shipboard = new String[11][11]; // records this player's ship placement
 	String[][] hitboard = new String[11][11]; // records this player's hits and misses
 	boolean[][] verify = new boolean[11][11]; // checks whether the player can place a ship on the board
@@ -56,11 +49,45 @@ class Player{
 		
 	}
 
-	public void place(char[] ship) {
+	public void place(String ship) {
 		
 		char[] alpha = {'A','B','C','D','E','F','G','H','I','J'};
+		char c = 'X';
 		String head, tail;
 		int h1 = -1, h2, t1 = -1, t2;
+		int length = -1;
+		
+		System.out.print("Placing ");
+		
+		switch (ship){
+		
+			case "aircraft":
+				c = 'A';
+				length = 5;
+				System.out.print("aircraft.\n");
+				break;
+			case "battleship":
+				c = 'B';
+				length = 4;
+				System.out.print("battleship.\n");
+				break;
+			case "submarine":
+				c = 'S';
+				length = 3;
+				System.out.print("submarine.\n");
+				break;
+			case "destroyer":
+				c = 'D';
+				length = 3;
+				System.out.print("destroyer.\n");
+				break;
+			case "patrol":
+				c = 'P';
+				length = 2;
+				System.out.print("patrol boat.\n");
+				break;
+				
+		}
 		
 		Scanner put = new Scanner(System.in);
 		
@@ -72,6 +99,7 @@ class Player{
 				
 		if (head.length() != 2 || tail.length() != 2){
 			
+			// STUPID STRINGINDEXOUTOFBOUNDSEXCEPTION
 			if (head.substring(1,3).equals("10") || tail.substring(1,3).equals("10")){
 				; // do nothing, this is legal
 			} else {
@@ -122,12 +150,12 @@ class Player{
 				
 			}
 			
-			if (diff+1 != ship.length){ // +1 to count the initial square
+			if (diff+1 != length){ // +1 to count the initial square
 				System.out.println("Your ship position is invalid, please try again!");
 				System.exit(1);
 			} else {
 				
-				char c = ship[0]; // teeeechnically more efficient re: memory caching
+				// char c = ship[0]; // teeeechnically more efficient re: memory caching
 				
 				int start, stop;
 				
@@ -233,22 +261,23 @@ public class Game{
 		 * */
 		
 		// p1 places ships
-		p1.place(p1.aircraft);
-		p1.place(p1.battleship);
-		p1.place(p1.destroyer);
-		p1.place(p1.submarine);
-		p1.place(p1.patrol);
+		p1.place("aircraft");
+		p1.place("battleship");
+		p1.place("destroyer");
+		p1.place("submarine");
+		p1.place("patrol");
 		
 		printBoard(p1.shipboard);
 		
 		// p2 places ships
 		
-		p2.place(p2.aircraft);
-		p2.place(p2.battleship);
-		p2.place(p2.destroyer);
-		p2.place(p2.submarine);
-		p2.place(p2.patrol);
+		p2.place("aircraft");
+		p2.place("battleship");
+		p2.place("destroyer");
+		p2.place("submarine");
+		p2.place("patrol");
 		
+		printBoard(p2.shipboard);
 	}
 	
 	public static void printBoard(String[][] board){ // prints a board
