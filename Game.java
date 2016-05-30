@@ -5,10 +5,11 @@ package stbs;
 * First version: Singlethreaded Battleship against two players
 */
 
-import java.io.*;
 import java.util.*;
 
-class Player{
+class Player extends Game{
+	
+	boolean debug = true; // make false to turn off debugging options
 	
 	String name; // player name
 	
@@ -39,6 +40,7 @@ class Player{
 	public void place(String ship) {
 		
 		char[] alpha = {'A','B','C','D','E','F','G','H','I','J'};
+		String[] auto = {"A1", "A5", "B1", "B4", "C1", "C3", "D1", "D3", "E1", "E2", "J1", "J5", "I1", "I4", "H1", "H3", "G1", "G3", "F1", "F2"}; // debugging tool
 		char c = 'X';
 		String head, tail;
 		int h1 = -1, h2, t1 = -1, t2;
@@ -76,14 +78,25 @@ class Player{
 				
 		}
 		
-		Scanner put = new Scanner(System.in);
-		
-		System.out.print("Position the head of your ship: ");
-		head = put.next();
-		
-		System.out.print("Position the tail of your ship: ");
-		tail = put.next();
-				
+		if (debug == true){ // debugging
+			
+			head = auto[count];
+			count++;
+			tail = auto[count];
+			count++;		
+			
+		} else {
+			
+			Scanner put = new Scanner(System.in);
+			
+			System.out.print("Position the head of your ship: ");
+			head = put.next();
+			
+			System.out.print("Position the tail of your ship: ");
+			tail = put.next();
+			
+		}
+						
 		if (head.length() != 2 || tail.length() != 2){
 			
 			// STUPID STRINGINDEXOUTOFBOUNDSEXCEPTION
@@ -141,9 +154,7 @@ class Player{
 				System.out.println("Your ship position is invalid, please try again!");
 				System.exit(1);
 			} else {
-				
-				// char c = ship[0]; // teeeechnically more efficient re: memory caching
-				
+								
 				int start, stop;
 				
 				if (h1 == t1){ // place the ship in the same row
@@ -205,6 +216,8 @@ class Player{
 
 public class Game{
 	
+	static int count = 0; // debugging option
+		
 	public static void main(String[] args){
 		
 		Scanner sc = new Scanner(System.in);
@@ -247,6 +260,8 @@ public class Game{
 		 * wake up to place its ships
 		 * */
 		
+		// todo: Allow players to choose ships to enter
+		
 		// p1 places ships
 		p1.place("aircraft");
 		p1.place("battleship");
@@ -257,7 +272,6 @@ public class Game{
 		printBoard(p1.shipboard);
 		
 		// p2 places ships
-		
 		p2.place("aircraft");
 		p2.place("battleship");
 		p2.place("destroyer");
