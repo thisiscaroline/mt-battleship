@@ -43,16 +43,17 @@ public class Game{
 		
 		for (int i = 1; i < 11; i++){ // todo: move this up to constructor because why is it even here...?
 			
-			p1.shipboard[0][i] = Integer.toString(i);
-			p2.shipboard[0][i] = Integer.toString(i);
+			p1.shipboard[0][i] = p1.hitboard[0][i] = Integer.toString(i);
+			p2.shipboard[0][i] = p2.hitboard[0][i] = Integer.toString(i);
 			
-			p1.shipboard[i][0] = Character.toString(alpha[i-1]);
-			p2.shipboard[i][0] = Character.toString(alpha[i-1]);
+			
+			p1.shipboard[i][0] = p1.hitboard[i][0] = Character.toString(alpha[i-1]);
+			p2.shipboard[i][0] = p2.hitboard[i][0] = Character.toString(alpha[i-1]);
 			
 		}
 		
-		p1.shipboard[0][10] = "10"; // ehhhhh why not
-		p2.shipboard[0][10] = "10";
+		p1.shipboard[0][10] = p1.hitboard[0][10] = "10"; // ehhhhh why not
+		p2.shipboard[0][10] = p2.hitboard[0][10] = "10";
 				
 		/**
 		 * MT note: this is where the other thread would
@@ -70,6 +71,8 @@ public class Game{
 		p1.place("submarine");
 		p1.place("patrol");
 		
+		printBoard(p1.hitboard);
+		System.out.println("=================================\n");
 		printBoard(p1.shipboard);
 		
 		// p2 places ships
@@ -79,6 +82,8 @@ public class Game{
 		p2.place("submarine");
 		p2.place("patrol");
 		
+		printBoard(p2.hitboard);
+		System.out.println("=================================\n");
 		printBoard(p2.shipboard);
 		
 	}
@@ -86,10 +91,8 @@ public class Game{
 	public static void printBoard(String[][] board){ // prints a board
 		
 		for (int i = 0; i < 11; i++){
-			
 			for (int j = 0; j < 11; j++)
 				System.out.print(board[i][j]+"  ");
-			
 			System.out.println("\n");
 			
 		}

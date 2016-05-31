@@ -3,9 +3,7 @@ package stbs;
 import java.util.Scanner;
 
 class Player extends Game{
-	
-	// boolean debug = true; // make false to turn off debugging options
-	
+		
 	String name; // player name
 	
 	String[][] shipboard = new String[11][11]; // records this player's ship placement
@@ -17,12 +15,12 @@ class Player extends Game{
 		// Setting up shipboard, making boolean board all false
 		for (int i = 0; i < 11; i++){
 			for (int j = 0; j < 11; j++){
-				this.shipboard[i][j] = "-";
+				this.shipboard[i][j] = this.hitboard[i][j] = "-";
 				this.verify[i][j] = false;
 			}
 		}
 		
-		this.shipboard[0][0] = " ";
+		this.shipboard[0][0] = this.hitboard[0][0] = " ";
 		
 		// Make boolean borders true
 		for (int i = 0; i < 11; i++){ 
@@ -35,7 +33,7 @@ class Player extends Game{
 	public void place(String ship) {
 		
 		char[] alpha = {'A','B','C','D','E','F','G','H','I','J'};
-		String[] auto = {"A1", "A5", "B1", "B4", "C1", "C3", "D1", "D3", "E1", "E2", "J1", "J5", "I1", "I4", "H1", "H3", "G1", "G3", "F1", "F2"}; // debugging tool
+		String[] auto = {"A1", "A5", "B1", "B4", "C1", "C3", "D1", "D3", "E1", "E2", "J1", "J5", "I1", "I4", "H1", "H3", "G1", "G3", "F1", "F2"}; // debugging option
 		char c = 'X';
 		String head, tail;
 		int h1 = -1, h2, t1 = -1, t2;
