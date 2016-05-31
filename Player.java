@@ -5,6 +5,10 @@ import java.util.Scanner;
 class Player extends Game{
 		
 	String name; // player name
+	int number; // player number
+	
+	private String coord; // firing coordinate
+	private boolean result; // result of coordinate firing
 	
 	String[][] shipboard = new String[11][11]; // records this player's ship placement
 	String[][] hitboard = new String[11][11]; // records this player's hits and misses
@@ -222,6 +226,38 @@ class Player extends Game{
 		
 		//put.close(); check to see if it's called the right number of times before closing?
 		
+	}
+	
+	public boolean fire(String coord){
+		
+		// getter/setter - p1 thread sets variable, waits, p2 interprets, returns result, waits, p1 marks it. repeat?
+		// (to streamline p2 can also set variable after they interpret the result, assuming a win isn't in place)
+		
+		
+		
+		
+		return false; // if ret false, firing player marks a miss; if true, marks a hit
+		
+	}
+	
+	public void mark(boolean result){ // runs after current player calls fire method
+		
+	}
+	
+	public String getCoord(){ // coordinate getter method
+		return coord;		
+	}
+	
+	public void setCoord(String coordinate){ // coordinate setter method
+		coord = coordinate;
+	}
+	
+	public boolean getResult(){ // result getter method
+		return result;
+	}
+	
+	public void setResult(boolean res){ // result setter method
+		result = res;
 	}
 	
 }

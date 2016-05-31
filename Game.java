@@ -39,6 +39,9 @@ public class Game{
 			
 		}	
 		
+		p1.number = 1;
+		p2.number = 2;
+		
 		System.out.println("\nRound is between "+p1.name+" and "+p2.name+".\n"); // '\n' also works but need extra concat
 		
 		for (int i = 1; i < 11; i++){ // todo: move this up to constructor because why is it even here...?
