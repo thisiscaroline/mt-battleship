@@ -94,13 +94,33 @@ class Player extends Game{
 						
 		if (head.length() != 2 || tail.length() != 2){
 			
-			// STUPID STRINGINDEXOUTOFBOUNDSEXCEPTION
-			if (head.substring(1,3).equals("10") || tail.substring(1,3).equals("10")){
-				; // do nothing, this is legal
-			} else {
-				System.out.println("You have entered an incorrect input.");
-				System.exit(1); // for now
+			try {
+				
+				if (head.substring(1,3).equals("10") || tail.substring(1,3).equals("10")){
+					; // do nothing, this is legal
+				} else {
+					System.out.println("You have entered an incorrect input.");
+					System.exit(1); // for now
+				}
+				
+			} catch (StringIndexOutOfBoundsException e){
+				
+				if (head.length() == 3){
+					if (head.substring(1,3).equals("10"))
+						; // do nothing, this is legal
+				}
+				
+				if (tail.length() == 3){
+					if (tail.substring(1,3).equals("10"))
+						; // do nothing, this is legal
+				}
+				
+				if (debug == true)
+					System.out.println("StringIndexOOBEx handled"); // debug message
+				
 			}
+			
+			
 			
 		}
 			

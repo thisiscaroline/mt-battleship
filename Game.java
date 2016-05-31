@@ -10,12 +10,16 @@ import java.util.*;
 public class Game{
 	
 	static int count = 0; // debugging option
-	static boolean debug = true;
+	static boolean debug = true; // debugging option
 		
 	public static void main(String[] args){
 		
 		Scanner sc = new Scanner(System.in);
 		char[] alpha = {'A','B','C','D','E','F','G','H','I','J'};
+		
+		/**
+		 * MT Note: Each player gets its own thread
+		 */
 		
 		Player p1 = new Player();
 		Player p2 = new Player();
@@ -76,6 +80,7 @@ public class Game{
 		p2.place("patrol");
 		
 		printBoard(p2.shipboard);
+		
 	}
 	
 	public static void printBoard(String[][] board){ // prints a board
